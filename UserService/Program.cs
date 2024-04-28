@@ -8,17 +8,22 @@ using UserService.Entities;
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddCors(options =>
+if (!string.IsNullOrEmpty(builder.Configuration.GetValue<string>("AllowedOrigins")))
 {
-    options.AddPolicy(name: MyAllowSpecificOrigins,
-                      policy =>
-                      {
-                          policy.WithOrigins("http://localhost:5173")
-                                .AllowAnyHeader()
-                                .AllowAnyMethod()
-                                .AllowCredentials();
-                      });
-});
+    var origins = builder.Configuration.GetValue<string>("AllowedOrigins").Split(";");
+    builder.Services.AddCors(options =>
+    {
+        options.AddPolicy(name: MyAllowSpecificOrigins,
+                                     policy =>
+                                     {
+                                         policy.WithOrigins(origins)
+                                               .AllowAnyHeader()
+                                               .AllowAnyMethod()
+                                               .AllowCredentials();
+                                     });
+    });
+
+}
 
 // Add services to the container.
 builder.Services.AddControllers();
