@@ -44,7 +44,7 @@ builder.Services.AddSwaggerGen(options =>
 
 builder.Services.AddDbContext<IApplicationDbContext, ApplicationDbContext>(options =>
 {
-    options.UseNpgsql(builder.Configuration.GetConnectionString("AZURE_POSTGRESQL_CONNECTIONSTRING"));
+    options.UseNpgsql(builder.Configuration.GetConnectionString("CUSTOMCONNSTR_POSTGRESQL"));
 });
 
 builder.Services.AddAuthorization();
